@@ -1,17 +1,20 @@
-angular.module('alurapic').controller('FotosController', function($scope, $http){
-	$scope.fotos = [];
-
-    $scope.filtro = '';
-
-    $http.get('v1/fotos').success(function(fotos){
-        $scope.fotos = fotos;
-    }).error(function(error){
-        console.log(error);
-    });
+angular.module('alurapic').controller('FotoController', function($scope, $http){
     
-    // promise.then(function(retorno){
-    //     $scope.fotos = retorno.data;
-    // }).catch(function(error){
-    //     contole.log(error);
-    // });
+    $scope.foto = {};
+    $scope.mensagem = '';
+    $scope.exibe = true;
+
+    $scope.submeter = function(){
+        if ( $scope.formulario.$valid ) {
+            $http.post('v1/fotos', $scope.foto)
+            .success(function(retorno){
+                $scope.foto={};
+                $scope.mensagem = 'Foto incluida com sucesso';
+            })
+            .error(function(erro){
+                console.log(erro);
+                $scope.mensagem = 'Não foi possível incluir a foto';
+            });
+        }
+    }
 });
